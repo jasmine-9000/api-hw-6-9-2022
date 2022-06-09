@@ -6,6 +6,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const PORT = 80;
+const DEBUG = true;
 
 let appleDB = {
     "apple1": {
@@ -41,14 +42,20 @@ app.post('/apple/db', (req, res) => {
     res.send("OK");
 })
 
-app.delete('/apple/db', (req, res) => {
-    let delapple = JSON.parse(req.body);
-    appleDB.foreach(apple => {
-        if(apple === delapple) {
-            delete appleDB[apple];
+app.delete('/apple/db/:appleid', (req, res) => {
+    let delapple = req.params.appleid;
+    if(delapple in appleDB) {
+        if(DEBUG) {
+            console.log(appleDB);
         }
-    })
-    res.send("deleted");
+        delete appleDB[delapple];
+        if(DEBUG) {
+            console.log(appleDB);
+        }
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
 });
 
 app.listen(PORT, () => {
