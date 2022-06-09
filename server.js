@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+const PORT = 80;
+
 let appleDB = {
     "apple1": {
         "name": "red delicious",
@@ -18,7 +20,11 @@ let appleDB = {
         "date": "Late 1930s"
     }
 }
-
+/*
+({name: "granny smith", species: "malus domestica x malus sylvestris", date: "1868"})}
+granny
+{name: 'granny smith', species: 'malus domestica x malus sylvestris', date: '1868'}
+*/
 let nextID = 3;
 
 app.get('/apple/db', (req, res) => {
@@ -26,8 +32,12 @@ app.get('/apple/db', (req, res) => {
 })
 
 app.post('/apple/db', (req, res) => {
-    let newapple = JSON.parse(req.body);
-    appleDB[`apple${nextID}`] = newApple;
+    console.log(req.body);
+    let newapple = req.body;
+    console.log(newapple);
+    appleDB[`apple${nextID}`] = newapple;
+    console.log(appleDB);
+    nextID += 1;
     res.send("OK");
 })
 
@@ -40,3 +50,7 @@ app.delete('/apple/db', (req, res) => {
     })
     res.send("deleted");
 });
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}! You better go catch it!`)
+})
