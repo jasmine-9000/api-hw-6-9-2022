@@ -32,6 +32,22 @@ app.get('/apple/db', (req, res) => {
     res.json(appleDB);
 })
 
+app.get('/apple/db/id/:appleid', (req, res) => {
+    res.json(appleDB[req.params.appleid]);
+})
+app.get('/apple/db/:applename', (req, res) => {
+    let name = req.params.applename;
+    let k = Object.keys(appleDB);
+    k.forEach((key, index) => {
+        let apple = appleDB[key];
+        if(apple.name === name) {
+            res.json(apple);
+        }
+    })
+    res.json({"name": name, "species": "unknown", "date": "unknown"});
+})
+
+
 app.post('/apple/db', (req, res) => {
     console.log(req.body);
     let newapple = req.body;
