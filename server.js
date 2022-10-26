@@ -16,9 +16,25 @@ let appleDB = {
     },
     "apple2":
     {
+        "name": "macintosh", 
+        "species": "steve jobs",
+        "date": "1976"
+    },
+    "apple3": {
+        
         "name": "fuji",
         "species": "M. pumila",
         "date": "Late 1930s"
+    }, 
+    "apple4": {
+        "name": "European Crab Apple",
+        "species": "malus sylvestris",
+        "date": "unknown"
+    },
+    "appleunknown": {
+        "name": "unknown",
+        "species": "unknown",
+        "date": "unknown"
     }
 }
 /*
@@ -44,7 +60,7 @@ app.get('/apple/db/:applename', (req, res) => {
             res.json(apple);
         }
     })
-    res.json({"name": name, "species": "unknown", "date": "unknown"});
+    res.json(appleDB["appleunknown"]);
 })
 
 
@@ -74,6 +90,23 @@ app.delete('/apple/db/:appleid', (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}! You better go catch it!`)
+// in a PUT request, put the new apple in the body.
+app.put('/apple/db/:appleid', (req, res) => {
+    let putapple = req.params.appleid;
+    let newapple = req.body;
+    if(delapple in appleid) {
+        if(DEBUG) {
+            console.log(appleDB);
+        }
+        appleDB[putapple] = newapple;
+        if(DEBUG) {
+            console.log(appleDB);
+        }
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+})
+app.listen(process.env.PORT || PORT, () => {
+    console.log(`Server running on port ${process.env.PORT || PORT}! You better go catch it!`)
 })
